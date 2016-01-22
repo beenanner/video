@@ -1,6 +1,8 @@
 # SpeedIndex using Browsertime
 
-This is a POC for using the coming Browsertime 1.0 together with [VisualMetrics](https://github.com/WPO-Foundation/visualmetrics) to fetch SpeedIndex and start render.
+This is a POC for using the coming Browsertime 1.0 together with [VisualMetrics](https://github.com/WPO-Foundation/visualmetrics) to fetch SpeedIndex and start render. 
+
+Using "only" a Docker image you will be able to record a video of the screen of the browser, navigate to a page and analyze the result using VisualMetrics and get all the usual metrics you get using Browsertime.
 
 ## The flow
 When you run and start test a URL this is what happens:
@@ -34,8 +36,7 @@ You need to specify the path to the pre and post tasks and where yoy want to out
  ```
 
 ## TODO
-There's a lot 2 do to make this ready for sitespeed.io 4.0 (I'll create issues asap):
-- setup the video correctly (quality)
+There's a lot 2 do to make this ready for sitespeed.io 4.0 , checkout the issues +:
 - find a good structure for keeping the video and screenshots
 - make browsertime take multiple pre & post tasks (so we can also do login or whatever)
 - Cleanup up the pre/post tasks.
