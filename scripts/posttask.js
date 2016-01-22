@@ -3,9 +3,10 @@
 let spawn = require('child_process').spawn;
 
 function spawnPython(context) {
-  let args = ['/visualmetrics/visualmetrics.py', '--video', '/browsertime/' + context.taskData.name + '-run-' +  context.taskData.run + '.mpg', '--orange', '--dir', '/browsertime/images', '--force']
 
-  let python = spawn('python', args);
+  let visualMetricsArgs = ['/visualmetrics/visualmetrics.py', '--video', '/browsertime/' + context.taskData.name + '-run-' + context.taskData.run + '.mpg', '--orange', '--dir', '/browsertime/images', '--force']
+
+  let python = spawn('python', visualMetricsArgs);
 
   return new Promise(function(resolve, reject) {
     let metrics = {};
@@ -15,6 +16,7 @@ function spawnPython(context) {
       speedIndex: 'Speed Index'
     };
 
+    // fetch the metrics
     python.stdout.on('data', function(data) {
       Object.keys(metricNames).forEach(function(metric) {
         if (data.indexOf(metricNames[metric]) > -1) {
@@ -23,6 +25,8 @@ function spawnPython(context) {
         }
       });
 
+      // special handling for visual progress, would be cool of Visual Metrics
+      // would output JSON instead
       metrics['visualProgress'] = data.toString().slice(data.toString().indexOf('Visual Progress:') + 17, data.toString().length - 1);
     });
 
@@ -46,9 +50,11 @@ function spawnPython(context) {
 
 module.exports = {
   run(context) {
+    // stop ffmpeg
     if (context.taskData.ffmpeg) {
       context.taskData.ffmpeg.kill('SIGHUP');
     }
+    // and start visual metrics
     return spawnPython(context);
   }
 };
